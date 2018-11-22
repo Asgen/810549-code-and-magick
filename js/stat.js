@@ -2,9 +2,10 @@
 
 var CLOUD_WIDTH = 420;
 var CLOUD_HEIGHT = 270;
-var CLOUD_X = 110;
+var CLOUD_X = 100;
 var CLOUD_Y = 250;
 var COLUMN_GAP = 50;
+var LEFT_GAP = 30;
 var GAP = 10;
 var FONT_HEIGHT = 20;
 var BAR_WIDTH = 40;
@@ -38,9 +39,9 @@ var getMaxElement = function (arr) {
 };
 
 window.renderStatistics = function (ctx, names, times) {
-  renderCloud(ctx, CLOUD_X, 20, 'rgba(0, 0, 0, 0.7)');
-  renderCloud(ctx, CLOUD_X - 10, 10, '#FFF');
-  message(ctx, CLOUD_X + 10, 30, '16px PT Mono', '#000', strings);
+  renderCloud(ctx, CLOUD_X + GAP, GAP * 2, 'rgba(0, 0, 0, 0.7)');
+  renderCloud(ctx, CLOUD_X, GAP, '#FFF');
+  message(ctx, CLOUD_X + LEFT_GAP, GAP + FONT_HEIGHT, '16px PT Mono', '#000', strings);
 
   ctx.fillStyle = '#000';
 
@@ -48,10 +49,10 @@ window.renderStatistics = function (ctx, names, times) {
 
   for (var i = 0; i < names.length; i++) {
     ctx.fillStyle = '#000';
-    ctx.fillText(names[i], CLOUD_X + 20 + (BAR_WIDTH + COLUMN_GAP) * i, CLOUD_Y);
-    ctx.fillText(Math.round(times[i]), CLOUD_X + 20 + (BAR_WIDTH + COLUMN_GAP) * i, CLOUD_Y - FONT_HEIGHT - GAP - ((BAR_HEIGHT * Math.round(times[i])) / maxTime));
+    ctx.fillText(names[i], CLOUD_X + LEFT_GAP + (BAR_WIDTH + COLUMN_GAP) * i, CLOUD_Y);
+    ctx.fillText(Math.round(times[i]), CLOUD_X + LEFT_GAP + (BAR_WIDTH + COLUMN_GAP) * i, CLOUD_Y - FONT_HEIGHT - GAP - ((BAR_HEIGHT * Math.round(times[i])) / maxTime));
 
     ctx.fillStyle = (names[i] === 'Вы' ? 'red' : 'hsl(240, ' + Math.floor(Math.random() * 101) + '%, 50%)');
-    ctx.fillRect(CLOUD_X + 20 + (BAR_WIDTH + COLUMN_GAP) * i, CLOUD_Y - GAP - ((BAR_HEIGHT * Math.round(times[i])) / maxTime), BAR_WIDTH, (BAR_HEIGHT * Math.round(times[i])) / maxTime);
+    ctx.fillRect(CLOUD_X + LEFT_GAP + (BAR_WIDTH + COLUMN_GAP) * i, CLOUD_Y - GAP - ((BAR_HEIGHT * Math.round(times[i])) / maxTime), BAR_WIDTH, (BAR_HEIGHT * Math.round(times[i])) / maxTime);
   }
 };
