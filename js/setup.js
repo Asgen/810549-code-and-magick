@@ -8,8 +8,10 @@ setup.classList.remove('hidden');
 var setupSimilar = document.querySelector('.setup-similar');
 setupSimilar.classList.remove('hidden');
 
-var dataBase = [
-  [
+var WIZARDS_QUANTITY = 4;
+
+var dataBase = {
+  names: [
     'Иван',
     'Хуан Себастьян',
     'Мария',
@@ -20,7 +22,7 @@ var dataBase = [
     'Вашингтон'
   ],
 
-  [
+  sernames: [
     'да Марья',
     'Верон',
     'Мирабелла',
@@ -31,7 +33,7 @@ var dataBase = [
     'Ирвинг'
   ],
 
-  [
+  coatColors: [
     'rgb(101, 137, 164)',
     'rgb(241, 43, 107)',
     'rgb(146, 100, 161)',
@@ -40,70 +42,55 @@ var dataBase = [
     'rgb(0, 0, 0)'
   ],
 
-  [
+  eyesColors: [
     'black',
     'red',
     'blue',
     'yellow',
     'green'
   ]
-];
+};
 
 var getRandomIndex = function (arr) {
   return Math.floor(Math.random() * arr.length);
 };
-
-var WIZARDS_QUANTITY = 4;
-var NAMES = dataBase[0];
-var SERNAMES = dataBase[1];
-var COAT_COLORS = dataBase[2];
-var EYES_COLORS = dataBase[3];
 
 // Функция создания массива объектов
 var generateObjects = function (dataArr, quantity) {
   var list = [];
   for (var i = 0; i < quantity; i++) {
     var object = {
-      name: NAMES[getRandomIndex(NAMES)] + ' ' + SERNAMES[getRandomIndex(SERNAMES)],
-      coatColor: COAT_COLORS[getRandomIndex(COAT_COLORS)],
-      eyesColor: EYES_COLORS[getRandomIndex(EYES_COLORS)]
+      name: dataBase.names[getRandomIndex(dataBase.names)] + ' ' + dataBase.sernames[getRandomIndex(dataBase.sernames)],
+      coatColor: dataBase.coatColors[getRandomIndex(dataBase.coatColors)],
+      eyesColor: dataBase.eyesColors[getRandomIndex(dataBase.eyesColors)]
     };
     list.push(object);
   }
   return list;
 };
 
-// Функция добавление текстового содержимого элементу родителя
-var addTextContent = function (parent, elementClass, text) {
-  var element = parent.querySelector(elementClass);
-  element.textContent = text;
-};
-
-// Функция изменения FILL элемента родителя
-var changeFill = function (parent, elementClass, color) {
-  var element = parent.querySelector(elementClass);
-  element.style.fill = color;
-};
-
 // Функция отрисовки похожих элементов
 var renderSimilarElements = function (dataArr, targetList, templateId, templateClass) {
-  // Куда вставлять Волшебников
+  // Куда вставлять похожие элементы
   var similarElements = document.querySelector(targetList);
   // Переменная для хранения элемента из шаблона
   var similarElementTamplate = document.querySelector(templateId)
     .content
     .querySelector(templateClass);
 
-  // Отрисовка Меток на карте
+  // Отрисовка похожих элементов
   var fragmentSimilarElements = document.createDocumentFragment();
   for (var i = 0; i < dataArr.length; i++) {
     var similarElement = similarElementTamplate.cloneNode(true);
-    addTextContent(similarElement, '.setup-similar-label', dataArr[i].name);
-    changeFill(similarElement, '.wizard-coat', dataArr[i].coatColor);
-    changeFill(similarElement, '.wizard-eyes', dataArr[i].eyesColor);
+    var wizarsName = similarElement.querySelector('.setup-similar-label');
+    wizarsName.textContent = dataArr[i].name;
+    var wizardCoat = similarElement.querySelector('.wizard-coat');
+    wizardCoat.style.fill = dataArr[i].coatColor;
+    var wizardEyes = similarElement.querySelector('.wizard-eyes');
+    wizardEyes.style.fill = dataArr[i].eyesColor;
     fragmentSimilarElements.appendChild(similarElement);
   }
-  // Добавляет фрагмент с метками в список меток
+  // Добавляет фрагмент с похожими элементами в заданный список
   similarElements.appendChild(fragmentSimilarElements);
 };
 
